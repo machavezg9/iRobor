@@ -2,7 +2,8 @@
 
 const int rotatePin = 8;
 const int verticalPin = 9;
-int vertPos = 0, rotPos = 0;
+const int expandPin = 7;
+int vertPos = 0, rotPos = 0, extPos = 0;
 float wiiP = 0.0;
 float wiiPAvg = 0.0;
 int lastarmPos = 350;
@@ -10,7 +11,7 @@ int lastarmPos = 350;
 const char i2c_address = 0x52;
 unsigned long lastGet = 0;//ms
 int jx = 0, jy = 0, accX = 0, accY = 0, accZ = 0, buttonZ = 0, buttonC = 0;
-const int light = 7;
+const int light = 6;
 
 void setup() {
   Serial.begin(115200);
@@ -42,22 +43,25 @@ void loop() {
   if (wiiP > 1) wiiP = 1;
   if (wiiP < 0) wiiP = 0;
   wiiPAvg = runningAvg( wiiP, wiiPAvg);
-  vertPos = map( wiiPAvg * 10 * 100, 0, 10*1000, 2200, 350);
+  vertPos = map( wiiPAvg * 10 * 100, 0, 1, 1000, 2000);
+  //1000-2000
+  extPos = map(jy, 30, 220, 1000, 2500);
+  //1000 - 2500
+  rotPos = map(jx, 30, 220, 1250, 2250);
   
-  rotPos = map(jy, 30, 220, 1600, 2250);
-  
-  pulseServo( verticalPin, vertPos);
-  pulseServo( rotatePin, rotPos);
+  pulseServo( verticalPin, vertPos );
+  pulseServo( rotatePin, rotPos );
+  pulseServo( expandPin, extPos );
   
   printDebug();
-//  if(buttonZ == 0){
-//    digitalWrite(light, HIGH);
-//    delay(10);
-//  }
-//  else if(buttonZ == 1){
-//    digitalWrite(light, LOW);
-//    delay(10);
-//  }
+  if(buttonZ == 0){
+    digitalWrite(light, HIGH);
+    delay(10);
+  }
+  else if(buttonZ == 1){
+    digitalWrite(light, LOW);
+    delay(10);
+  }
 }
 
 float runningAvg(float current, float old) {
