@@ -49,7 +49,8 @@ void loop() {
   pulseServo( bottomPin, bottomPos);
   pulseServo( rightPin, rightPos);
   pulseServo( leftPin, leftPos);
-
+  
+  printDebug();
 }
 
 void pulseServo(int servoPin, int pulseLenUs)
