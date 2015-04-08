@@ -9,3 +9,4 @@ MG995 servos and learn their angular limitations with respect to my robot arm
 <p>http://thumbs.dreamstime.com/z/industrial-robotic-arm-isolated-12139594.jpg
 <p>http://www.trossenrobotics.com/p/phantomx-ax-12-reactor-robot-arm.aspx
 <p>http://www.trossenrobotics.com/robotgeek-gripper
+<p>https://learn.adafruit.com/downloads/pdf/adafruit-16-channel-pwm-slash-servo-shield.pdf
