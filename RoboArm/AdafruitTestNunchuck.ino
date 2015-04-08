@@ -1,41 +1,116 @@
 /*
-This code only moves one servo located at PWM pin 0 on the adafruit board.
+This code only moves one servos located at PWM pin 0, 1, 2 on the adafruit board.
 */
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
 // called this way, it uses the default address 0x40
+//need to modify to run from any address besides 0x40
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // you can also call it with a different address you want
 //Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x41);
 
-// Depending on your servo make, the pulse width min and max may vary, you 
-// want these to be as small/large as possible without hitting the hard stop
-// for max range. You'll have to tweak them as necessary to match the servos you
-// have!
-#define SERVOMIN  100 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  425 // this is the 'maximum' pulse length count (out of 4096)
+//Servo pin assignment
+const uint8_t bottomPin = 0;
+const uint8_t rightPin = 1;
+const uint8_t leftPin = 2;
 
-// our servo # counter
-uint8_t servonum = 0;
+//Initializers
+int bottomPos = 0, rightPos = 0, leftPos = 0;
 
-void setup() {
-  pwm.begin();
+void setup() 
+{
+  Serial.begin(115200);
   
+  //Nunchuck Read
+  Wire.begin();
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  digitalWrite(A2, LOW);
+  digitalWrite(A3, HIGH);
+  delay(100);
+  initNunchuck();
+  
+  pwm.begin();
   pwm.setPWMFreq(50);  // Analog servos run at ~60 Hz updates
 }
 
 void loop() {
+  get_data();
+  
+  //Bottom Servo
+  bottomPos = map( accX, 65, 180, 1000, 2500);
+  //Right Servo
+  rightPos = map( buttonZ, 0, 1, 500, 1250);
+  //Left Servo
+  leftPos = map( jy, 30, 220, 1250, 2400);
+  
   // Drive each servo one at a time
-  for (uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; ++pulselen) {
-    pwm.setPWM(0, 0, pulselen);
-    delay(10);
-  }
-  delay(1000);
-  for (uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; --pulselen) {
-    pwm.setPWM(0, 0, pulselen);
-    delay(10);
-  }
-  delay(1000);
+  pulseServo( bottomPin, bottomPos);
+  pulseServo( rightPin, rightPos);
+  pulseServo( leftPin, leftPos);
 
+}
+
+void pulseServo(int servoPin, int pulseLenUs)
+{
+  pwm.setPWM(servoPin, 0, pulseLenUs);
+  delay(1);
+}
+
+void get_data()
+{
+  int buffer[6];
+  Wire.requestFrom(i2c_address, 6);
+  int i = 0;
+  while(Wire.available()) {
+    buffer[i] = Wire.read();
+    buffer[i] ^= 0x17;
+    buffer[i] += 0x17;
+    i++;
+  }
+  if(i != 6) {
+    Serial.println("Error reading from i2c");
+  }
+  write_i2c_zero();
+  
+  buttonZ = buffer[5] & 0x01;
+  buttonC = (buffer[5] >> 1) & 0x01;
+  jx = buffer[0];
+  jy = buffer[1];
+  accX = buffer[2];
+  accY = buffer[3];
+  accZ = buffer[4];
+}
+
+void write_i2c_zero()
+{
+  Wire.beginTransmission(i2c_address);
+  Wire.write((byte)0x00);
+  Wire.endTransmission();
+}
+
+void initNunchuck()
+{
+  Wire.beginTransmission(i2c_address);
+  Wire.write((byte)0x40);
+  Wire.write((byte)0x00);
+  Wire.endTransmission();
+}
+
+//debug
+void printDebug() 
+{
+  Serial.print("accX: ");
+  Serial.print(accX);
+  Serial.print(", jy: ");
+  Serial.print(jy);
+  Serial.print(", buttonZ: ");
+  Serial.print(buttonZ);
+  Serial.print(", bottomPos: ");
+  Serial.print(bottomPos);
+  Serial.print(", rightPos: ");
+  Serial.print(rightPos);
+  Serial.print(", leftPos: ");
+  Serial.println(leftPos);
 }
