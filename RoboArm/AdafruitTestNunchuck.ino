@@ -18,6 +18,9 @@ const uint8_t leftPin = 2;
 //Initializers
 int bottomPos = 0, rightPos = 0, leftPos = 0;
 
+const char i2c_address = 0x52;
+int jx = 0, jy = 0, accX = 0, accY = 0, accZ = 0, buttonZ = 0, buttonC = 0;
+
 void setup() 
 {
   Serial.begin(115200);
