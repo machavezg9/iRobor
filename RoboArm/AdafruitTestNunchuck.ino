@@ -6,7 +6,7 @@ This code only moves one servos located at PWM pin 0, 1, 2 on the adafruit board
 
 // called this way, it uses the default address 0x40
 //need to modify to run from any address besides 0x40
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x44);
 // you can also call it with a different address you want
 //Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x41);
 
