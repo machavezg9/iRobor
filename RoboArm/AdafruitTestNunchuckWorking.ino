@@ -43,11 +43,14 @@ void loop()
   get_data();
   
   //Bottom Servo
-  bottomPos = map( accX, 65, 180, 1000, 2500);
+//  bottomPos = map( accX, 65, 180, 1000, 2500);
+  bottomPos = map( accX, 65, 180, 225, 450);
   //Right Servo
-  rightPos = map( buttonZ, 0, 1, 500, 1250);
+//  rightPos = map( buttonZ, 0, 1, 500, 1250);
+  rightPos = map( buttonZ, 0, 1, 100, 225);
   //Left Servo
-  leftPos = map( jy, 30, 220, 1250, 2400);
+//  leftPos = map( jy, 30, 220, 1250, 2400);
+  leftPos = map( jy, 30, 220, 250, 425);
   
   // Drive each servo one at a time
   pulseServo( bottomPin, bottomPos);
