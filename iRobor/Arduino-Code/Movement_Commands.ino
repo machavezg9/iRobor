@@ -1,23 +1,13 @@
 //Controller values for movement, adjust according to your controller
-//Start and end points for reverse and left movement(Bottom half of throttle)
-int backwardStart = 980;
-int backwardEnd = 1450;
-//Start and end points for stop (Middle of throttle)
-//Note: change this to deadzone from start stop, this is redundant
-int stopStart = 1450;
-int stopEnd = 1550;
-//Start and end points for forward (Top half of throttle)
-int forwardStart = 1550;
-int forwardEnd = 2010;
-//Start and end points for turning left (Left half of rudder)
-int leftStart = 980;
-int leftEnd = 1450;
-//Start and end points for turning dead zone(Middle of rudder)
+//Start and end points for reverse and left movement(Bottom & left half of Ele and Ail)
+int lowerStart = 980;
+int lowerEnd = 1450;
+//Start and end points for stop (Middle of Ele and Ail)
 int deadZoneStart = 1450;
 int deadZoneEnd = 1550;
-//Start and end points for turning right (Right half of rudder)
-int rightStart = 1550;
-int rightEnd = 2010;
+//Start and end points for forward (Top half of throttle)
+int upperStart = 1550;
+int upperEnd = 2010;
 //Motor speed values
 int motorLow = 0;
 int motorHigh = 255;
@@ -88,18 +78,18 @@ int returnMapTurnSpeed(int mapTurnSpeedStart, int mapTurnSpeedEnd, int mapTurnSp
 void sendDirection() {
   int mappingDirection;
   int mappingTurn;
-  if ( readMovementDirection() > forwardStart && readMovementDirection() < forwardEnd) {
-    mappingDirection = returnMapSpeed(readMovementDirection(), forwardStart, forwardEnd);
+  if ( readMovementDirection() > upperStart && readMovementDirection() < upperEnd) {
+    mappingDirection = returnMapSpeed(readMovementDirection(), upperStart, upperEnd);
     //Forward right, left and forward
-    if ( readTurningDirection() > rightStart && readTurningDirection() < rightEnd ) {
+    if ( readTurningDirection() > upperStart && readTurningDirection() < upperEnd ) {
       //Right turn while moving forward
-      //mappingTurn = map(readTurningDirection(), rightStart, rightEnd, mappingDirection, 0);
-      mappingTurn = returnMapTurn(rightStart, rightEnd, mappingDirection);
+      //mappingTurn = map(readTurningDirection(), upperStart, upperEnd, mappingDirection, 0);
+      mappingTurn = returnMapTurn(upperStart, upperEnd, mappingDirection);
       rightForward(mappingTurn);
       leftForward(mappingDirection);
-    } else if ( readTurningDirection() > leftStart && readTurningDirection() < leftEnd ) {
-      //mappingTurn = map(readTurningDirection(), leftEnd, leftStart, mappingDirection, 0);
-      mappingTurn = returnMapTurn(leftEnd, leftStart, mappingDirection);
+    } else if ( readTurningDirection() > lowerStart && readTurningDirection() < lowerEnd ) {
+      //mappingTurn = map(readTurningDirection(), lowerEnd, lowerStart, mappingDirection, 0);
+      mappingTurn = returnMapTurn(lowerEnd, lowerStart, mappingDirection);
       rightForward(mappingDirection);
       leftForward(mappingTurn);
       delay(100);
@@ -109,18 +99,18 @@ void sendDirection() {
       delay(100);
     }
     //delay(100);
-  } else if ( readMovementDirection() > backwardStart && readMovementDirection() < backwardEnd ) {
-    mappingDirection = returnMapSpeed(readMovementDirection(), backwardEnd, backwardStart);
+  } else if ( readMovementDirection() > lowerStart && readMovementDirection() < lowerEnd ) {
+    mappingDirection = returnMapSpeed(readMovementDirection(), lowerEnd, lowerStart);
     //Backward right, left, and backward
-    if ( readTurningDirection() > rightStart && readTurningDirection() < rightEnd ) {
-      //mappingTurn = map(readTurningDirection(), rightStart, rightEnd, mappingDirection, 0);
-      mappingTurn = returnMapTurn(rightStart, rightEnd, mappingDirection);
+    if ( readTurningDirection() > upperStart && readTurningDirection() < upperEnd ) {
+      //mappingTurn = map(readTurningDirection(), upperStart, upperEnd, mappingDirection, 0);
+      mappingTurn = returnMapTurn(upperStart, upperEnd, mappingDirection);
       rightBackward(mappingTurn);
       leftBackward(mappingDirection);
       delay(100);
-    } else if ( readTurningDirection() > leftStart && readTurningDirection() < leftEnd ) {
-      //mappingTurn = map(readTurningDirection(), leftEnd, leftStart, mappingDirection, 0);
-      mappingTurn = returnMapTurn(leftEnd, leftStart, mappingDirection);
+    } else if ( readTurningDirection() > lowerStart && readTurningDirection() < lowerEnd ) {
+      //mappingTurn = map(readTurningDirection(), lowerEnd, lowerStart, mappingDirection, 0);
+      mappingTurn = returnMapTurn(lowerEnd, lowerStart, mappingDirection);
       rightBackward(mappingDirection);
       leftBackward(mappingTurn);
       delay(100);
@@ -133,7 +123,7 @@ void sendDirection() {
   } else if ( readMovementDirection() > deadZoneStart && readMovementDirection() < deadZoneEnd ) {
     //Forward right, left and forward
     int turnSpeed = 225;
-    if ( readTurningDirection() > rightStart && readTurningDirection() < rightEnd ) {
+    if ( readTurningDirection() > upperStart && readTurningDirection() < upperEnd ) {
       //Right turn, stops then turns
       rightBackward(turnSpeed);
       leftForward(turnSpeed);
@@ -141,17 +131,17 @@ void sendDirection() {
 //      while(mappingTurn > motorLow) {
 //        rightBackward(mappingTurn);
 //        leftForward(mappingTurn);
-//        mappingTurn = map(readTurningDirection(), rightStart, rightEnd, motorLow, motorHigh);
+//        mappingTurn = map(readTurningDirection(), upperStart, upperEnd, motorLow, motorHigh);
 //        delay(100);
 //      }
-    } else if ( readTurningDirection() > leftStart && readTurningDirection() < leftEnd ) {
+    } else if ( readTurningDirection() > lowerStart && readTurningDirection() < lowerEnd ) {
       rightForward(turnSpeed);
       leftBackward(turnSpeed);
       delay(100);
 //      while(mappingTurn > motorLow) {
 //        rightForward(mappingTurn);
 //        leftBackward(mappingTurn);
-//        mappingTurn = map(readTurningDirection(), leftEnd, leftStart, motorLow, motorHigh);
+//        mappingTurn = map(readTurningDirection(), lowerEnd, lowerStart, motorLow, motorHigh);
 //        delay(100);
 //      }
     } else {
