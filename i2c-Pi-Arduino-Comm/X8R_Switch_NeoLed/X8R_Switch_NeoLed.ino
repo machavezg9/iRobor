@@ -16,14 +16,6 @@ void setup() {
   
   strip.begin();
   strip.show(); //initializes led to off
-
-//  for (int i = 0; i < 256; i++) {
-//    float x = i;
-//    x /= 255;
-//    x = pow(x, 2.5);
-//    x *= 255;
-//    gammatable[i] = x;
-//  }
 }
 
 void setRed(int wait) {
