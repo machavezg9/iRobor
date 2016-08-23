@@ -1,6 +1,7 @@
 //This is to prevent the iRobor from operating once signal has been lost
 //Signal Variables
-int minSignal = 100;
+//Signal strength is measured from 0ms-1ms
+int minSignal = 300;
 
 /*-----------------------Read RSSI-=------------------------*/
 int readSignalInput() {
