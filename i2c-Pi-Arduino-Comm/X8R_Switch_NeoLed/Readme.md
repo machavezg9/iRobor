@@ -1,1 +1,1 @@
-Code turns on a LED sing a switch on the X9D.
+Code turns on a Red LED that is powered and controlled by an Arduino UNO using a switch on the X9D, and prints the LED's status on the RPi using the data received from the Arduino. 1 meaning on and 0 meaning off.
