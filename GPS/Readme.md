@@ -6,3 +6,4 @@ Latitude, Longitude, and Bearing, WHAT ARE THEY!!!!!!!!?????????????
 <br>http://mathforum.org/library/drmath/view/55417.html
 <br>http://forum.arduino.cc/index.php?topic=331899.0
 <br>https://en.wikipedia.org/wiki/Kalman_filter
+<br>https://gist.github.com/jeromer/2005586
