@@ -15,3 +15,10 @@ The rendering below was the first design that I constructed before moving on to 
   </br>
 </p>
 
+<!--- 
+(https://learn.adafruit.com/adafruit-microphone-amplifier-breakout/measuring-sound-levels) 
+http://playground.arduino.cc/Main/RotaryEncoders
+https://www.element14.com/community/thread/16823/l/read-encoder-motor-axis-speed?displayFullThread=true
+https://www.intorobotics.com/pick-best-temperature-sensor-arduino-project/#nav-mobile
+http://www.homautomation.org/2014/02/18/arduino-temperature-sensor-comparison/
+--> 
