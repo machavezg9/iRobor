@@ -78,6 +78,7 @@ int returnMapTurnSpeed(int mapTurnSpeedStart, int mapTurnSpeedEnd, int mapTurnSp
 void sendDirection() {
   int mappingDirection;
   int mappingTurn;
+  //First Directional Loop
   if ( readMovementDirection() > upperStart && readMovementDirection() < upperEnd) {
     mappingDirection = returnMapSpeed(readMovementDirection(), upperStart, upperEnd);
     //Forward right, left and forward
@@ -99,7 +100,9 @@ void sendDirection() {
       delay(100);
     }
     //delay(100);
-  } else if ( readMovementDirection() > lowerStart && readMovementDirection() < lowerEnd ) {
+  } 
+  //Second Direction Loop
+  else if ( readMovementDirection() > lowerStart && readMovementDirection() < lowerEnd ) {
     mappingDirection = returnMapSpeed(readMovementDirection(), lowerEnd, lowerStart);
     //Backward right, left, and backward
     if ( readTurningDirection() > upperStart && readTurningDirection() < upperEnd ) {
@@ -120,7 +123,9 @@ void sendDirection() {
       delay(100);
     }
     //delay(100);
-  } else if ( readMovementDirection() > deadZoneStart && readMovementDirection() < deadZoneEnd ) {
+  } 
+  // Third Directional Loop
+  else if ( readMovementDirection() > deadZoneStart && readMovementDirection() < deadZoneEnd ) {
     //Forward right, left and forward
     int turnSpeed = 225;
     if ( readTurningDirection() > upperStart && readTurningDirection() < upperEnd ) {
@@ -148,7 +153,9 @@ void sendDirection() {
       stopMotors();
       delay(100);
     } 
-  } else {
+  } 
+  //Fourth Directional Loop
+  else {
     stopMotors();
     delay(100);
   }
