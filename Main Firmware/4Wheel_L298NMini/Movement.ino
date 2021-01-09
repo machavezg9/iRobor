@@ -1,5 +1,5 @@
 // Motor speed values
-int motorMin = 0;
+int motorMin = 56;
 int motorMax = 255;
 int eleSpeed;
 int eleDirection;
@@ -22,12 +22,15 @@ int rdCH2() {
 }
 
 void move() {
-  if (rdCH1() > rcMid + deadBand && rdCH1() < rcMax) {
-    eleSpeed = map(rdCH1(), rcMid + deadBand, rcMax, motorMin, motorMax);
+  if (rdCH1() < rcMid + deadBand && rdCH1() < rcMid - deadBand && rdCH2() < rcMid + deadBand && rdCH2() < rcMid - deadBand) {
+    stop();
+  }
+  else if (rdCH1() > rcMid && rdCH1() < rcMax) {
+    eleSpeed = map(rdCH1(), rcMid, rcMax, motorMin, motorMax);
     forward(eleSpeed);
   }
-  else if (rdCH1() < rcMid - deadBand && rdCH1() > rcMin) {
-    eleSpeed = map(rdCH1(),rcMid - deadBand, rcMin, motorMin, motorMax);
+  else if (rdCH1() < rcMid && rdCH1() > rcMin) {
+    eleSpeed = map(rdCH1(), rcMid, rcMin, motorMin, motorMax);
     reverse(eleSpeed);
   }
   else {
@@ -36,11 +39,14 @@ void move() {
 }
 
 int speed() {
-  if (rdCH1() > rcMid + deadBand && rdCH1() < rcMax) {
-    return map(rdCH1(), rcMid + deadBand, rcMax, motorMin, motorMax);
+  if (rdCH1() < rcMid + deadBand && rdCH1() < rcMid - deadBand && rdCH2() < rcMid + deadBand && rdCH2() < rcMid - deadBand) {
+    return 0;
   }
-  else if (rdCH1() < rcMid - deadBand && rdCH1() > rcMin) {
-    return map(rdCH1(),rcMid - deadBand, rcMin, motorMin, motorMax);
+  else if (rdCH1() > rcMid && rdCH1() < rcMax) {
+    return map(rdCH1(), rcMid, rcMax, motorMin, motorMax);
+  }
+  else if (rdCH1() < rcMid && rdCH1() > rcMin) {
+    return map(rdCH1(), rcMid, rcMin, motorMin, motorMax);
   }
   else {
     return 0;
@@ -48,11 +54,15 @@ int speed() {
 }
 
 int direction() {
-  if (rdCH1() > rcMid + deadBand && rdCH1() < rcMax) {
+  if (rdCH1() < rcMid + deadBand && rdCH1() < rcMid - deadBand && rdCH2() < rcMid + deadBand && rdCH2() < rcMid - deadBand) {
+    eleDirection = "Stopped";
+    return 0;
+  }
+  else if (rdCH1() > rcMid && rdCH1() < rcMax) {
     eleDirection = "Forward";
     return 1;
   }
-  else if (rdCH1() < rcMid - deadBand && rdCH1() > rcMin) {
+  else if (rdCH1() < rcMid && rdCH1() > rcMin) {
     eleDirection = "Reverse";
     return 2;
   }
@@ -82,6 +92,28 @@ void reverse(int motorSpeed) {
   analogWrite(ML2, motorSpeed);
   analogWrite(ML3, motorSpeed);
   analogWrite(ML4, motorMin);
+}
+
+void right(int motorSpeed) {
+  analogWrite(MR1, motorMin);
+  analogWrite(MR2, motorSpeed);
+  analogWrite(MR3, motorSpeed);
+  analogWrite(MR4, motorMin);
+  analogWrite(ML1, motorSpeed);
+  analogWrite(ML2, motorMin);
+  analogWrite(ML3, motorMin);
+  analogWrite(ML4, motorSpeed);
+}
+
+void left(int motorSpeed) {
+  analogWrite(MR1, motorSpeed);
+  analogWrite(MR2, motorMin);
+  analogWrite(MR3, motorMin);
+  analogWrite(MR4, motorSpeed);
+  analogWrite(ML1, motorSpeed);
+  analogWrite(ML2, motorMin);
+  analogWrite(ML3, motorMin);
+  analogWrite(ML4, motorSpeed);
 }
 
 // stops all motors

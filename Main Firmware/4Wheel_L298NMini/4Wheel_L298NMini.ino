@@ -105,6 +105,6 @@ void loop() {
   // movement
   signalCheck();
   move();
-  delay(100);
+  delay(10);
 
 }
