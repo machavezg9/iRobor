@@ -4,15 +4,8 @@ void displayInputs() {
   int readCH1 = rdCH1(); // read CH1 pin
   int readCH2 = rdCH2(); // read CH2 pin
   int readRSSI = rdRSSI(); // read RSSI pin
-  int eleSpeed = speed(); // read speed being sent to motors
-  int eleDirection = direction(); // read direction being sent to motors (1 = forward, 2 = reverse, 0 = stop)
-
-  // Min and Max RC channel values (lowest and highest PWM signals output by TX)
-  int rcMin = 980;
-  int rcMax = 2020;
-  int deadBand = 25;
-  // calculated values
-  int rcMid = rcMin + ((rcMax - rcMin) / 2);
+  int readSpeed = speed(); // read speed being sent to motors
+  int readDirection = direction(); // read direction being sent to motors (1 = forward, 2 = reverse, 3 = right, 4 = left, 0 = stop)
 
   display.clearDisplay(); // clear display buffer
   display.setTextSize(1); // set font size
@@ -35,16 +28,22 @@ void displayInputs() {
   // line 5
   display.setCursor(0, 40);
   display.print("Speed: ");
-  display.print(eleSpeed);
+  display.print(readSpeed);
   // line 6
   display.setCursor(0, 50);
   display.print("Dir: ");
-  switch (eleDirection) {
+  switch (readDirection) {
     case 1:
       display.print("Forward");
       break;
     case 2:
       display.print("Reverse");
+      break;
+    case 3:
+      display.print("Right");
+      break;
+    case 4:
+      display.print("Left");
       break;
     case 0:
       display.print("Stopped");

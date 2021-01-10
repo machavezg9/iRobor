@@ -13,6 +13,5 @@ void signalCheck() {
   while (rdRSSI() < signalMin) { // if RSSI reading is less than the minimum acceptable signal
     stop(); // sets all motors to motorMin
     rdRSSI();
-    delay(100);
   }
 }
